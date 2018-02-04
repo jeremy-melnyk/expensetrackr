@@ -50,7 +50,7 @@ var sparkbotConfig = {
     studio_command_uri: process.env.studio_command_uri
 };
 if(process.env.mongo_uri){
-    var mongoTables = ['users', 'events', 'expenses'];
+    var mongoTables = ['users', 'events', 'tasks', 'expenses'];
     var mongoConfig = {
         mongoUri: process.env.mongo_uri,
         tables: mongoTables
