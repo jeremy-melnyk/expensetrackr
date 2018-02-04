@@ -8,6 +8,9 @@ module.exports = function (controller) {
 
   /* List expenses */
   controller.hears(['expenses'], mentions, function (bot, message) {
+    if(!message){
+      bot.reply(message, emptyArgErrorMsg);
+    }
     // Get user forms storage
     controller.storage.users.get(message.user, function (err, user) {
       if (err) {
@@ -21,6 +24,9 @@ module.exports = function (controller) {
 
   /* Add expenses */
   controller.hears(['add (.*)'], mentions, function (bot, message) {
+    if(!message){
+      bot.reply(message, emptyArgErrorMsg);
+    }
     const newExpense = message.match.length > 1 ? message.match[1] : null;
     if (newExpense === null) {
       bot.reply(message, emptyArgErrorMsg);
@@ -52,6 +58,9 @@ module.exports = function (controller) {
 
   // listen for a user saying "remove <number>" and remove that item
   controller.hears(['remove (.*)'], mentions, function (bot, message) {
+        if(!message){
+      bot.reply(message, emptyArgErrorMsg);
+    }
     const expenseIdToRemove = message.match.length > 1 ? message.match[1] : "";
     if (expenseIdToRemove === null) {
       bot.reply(message, emptyArgErrorMsg);
