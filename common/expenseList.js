@@ -12,14 +12,15 @@ module.exports = (function () {
     lines.push(initialLine);
 
     for (var i = 0; i < user.expenses.length; i++) {
-      var line = `- \`${i + 1}\`) ${user.expenses[i]}`;
+      var line = `> \`${i + 1}\`) ${user.expenses[i]}`;
       lines.push(line);
     }
 
     var endingLine = "Reply with `remove _expenseId_` to remove an expense.";
     lines.push(endingLine);
 
-    return lines.join(os.EOL);
+    const delim = `  ${os.EOL}`;
+    return lines.join(delim);
   };
 
   return {
