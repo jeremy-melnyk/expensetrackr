@@ -14,7 +14,7 @@ module.exports = (function () {
       lines.push(line);
     }
 
-    const endingLine = "Reply with `remove _number_` to remove an expense.";
+    const endingLine = "Reply with `remove _expenseId_` to remove an expense.";
     lines.push(endingLine);
 
     return lines.join('\n');
