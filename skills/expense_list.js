@@ -8,7 +8,7 @@ module.exports = function (controller) {
 
   /* List expenses */
   controller.hears(['expenses'], mentions, function (bot, message) {
-    if(!message){
+    if (!message) {
       bot.reply(message, emptyArgErrorMsg);
     }
     // Get user forms storage
@@ -24,7 +24,7 @@ module.exports = function (controller) {
 
   /* Add expenses */
   controller.hears(['add expense (.*)'], mentions, function (bot, message) {
-    if(!message){
+    if (!message) {
       bot.reply(message, emptyArgErrorMsg);
     }
     const newExpense = message.match.length > 1 ? message.match[1] : null;
@@ -58,7 +58,7 @@ module.exports = function (controller) {
 
   // listen for a user saying "remove expense <id>" and remove that item
   controller.hears(['remove expense (.*)'], mentions, function (bot, message) {
-        if(!message){
+    if (!message) {
       bot.reply(message, emptyArgErrorMsg);
     }
     const expenseIdToRemove = message.match.length > 1 ? message.match[1] : "";
@@ -85,16 +85,22 @@ module.exports = function (controller) {
         } else {
           const expense = user.expenses.splice(expenseIdIndex, 1);
 
-          // reply with a strikethrough message...
-          bot.reply(message, '~' + expense + '~');
+          controller.storage.users.save(user, function (err, saved) {
+            if (err) {
+              console.log(err);
+              bot.reply(message, addErrorMsg);
+            } else {
+              var expenseReply = `Removed ${expense}.  \n`;
+              if (saved.expenses.length > 0) {
+                const remainingExpenses = expenseList.generateExpenseList(saved);
+                expenseReply += `Here are your remaining expenses:  \n${remainingExpenses}`;
+              } else {
+                expenseReply += 'Your expense list is now empty!';
+              }
 
-          if (user.expenses.length > 0) {
-            const remainingExpenses = expenseList.generateExpenseList(user);
-            const expenseReply = `Here are our remaining expenses:\n ${remainingExpenses}`;
-            bot.reply(message, expenseReply);
-          } else {
-            bot.reply(message, 'Your expense list is now empty!');
-          }
+              bot.reply(message, expenseReply);
+            }
+          });
         }
       });
     }
