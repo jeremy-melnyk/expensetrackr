@@ -23,7 +23,7 @@ module.exports = function (controller) {
   });
 
   /* Add expenses */
-  controller.hears(['add (.*)'], mentions, function (bot, message) {
+  controller.hears(['add expense (.*)'], mentions, function (bot, message) {
     if(!message){
       bot.reply(message, emptyArgErrorMsg);
     }
@@ -56,8 +56,8 @@ module.exports = function (controller) {
     });
   });
 
-  // listen for a user saying "remove <number>" and remove that item
-  controller.hears(['remove (.*)'], mentions, function (bot, message) {
+  // listen for a user saying "remove expense <id>" and remove that item
+  controller.hears(['remove expense (.*)'], mentions, function (bot, message) {
         if(!message){
       bot.reply(message, emptyArgErrorMsg);
     }
