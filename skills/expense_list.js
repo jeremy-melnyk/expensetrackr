@@ -93,7 +93,6 @@ module.exports = function (controller) {
               var expenseReply = `Removed ${expense}.  \n`;
               if (saved.expenses.length > 0) {
                 const remainingExpenses = expenseList.generateExpenseList(saved);
-                expenseReply += `Here are your remaining expenses:  \n${remainingExpenses}`;
               } else {
                 expenseReply += 'Your expense list is now empty!';
               }
