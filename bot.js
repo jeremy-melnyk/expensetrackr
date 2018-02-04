@@ -37,7 +37,8 @@ var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
 
 // Create the Botkit controller, which controls all instances of the bot.
-var controller = Botkit.sparkbot({
+
+var sparkbotConfig = {
     // debug: true,
     // limit_to_domain: ['mycompany.com'],
     // limit_to_org: 'my_cisco_org_id',
@@ -46,8 +47,18 @@ var controller = Botkit.sparkbot({
     studio_token: process.env.studio_token, // get one from studio.botkit.ai to enable content management, stats, message console and more
     secret: process.env.secret, // this is an RECOMMENDED but optional setting that enables validation of incoming webhooks
     webhook_name: 'Cisco Spark bot created with Botkit, override me before going to production',
-    studio_command_uri: process.env.studio_command_uri,
-});
+    studio_command_uri: process.env.studio_command_uri
+};
+if(process.env.mongo_uri){
+    var mongoTables = ['users', 'events', 'expenses'];
+    var mongoConfig = {
+        mongoUri: process.env.mongo_uri,
+        tables: mongoTables
+    };
+    var mongoStorage = require('botkit-storage-mongo')(mongoConfig);
+    sparkbotConfig.storage = mongoStorage;
+}
+var controller = Botkit.sparkbot(sparkbotConfig);
 
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);
